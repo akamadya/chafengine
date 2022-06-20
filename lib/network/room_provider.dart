@@ -15,7 +15,7 @@ class RoomProvider {
     }
 
     Either<RoomDetail, Error> res;
-    var response = await http.get(Uri.parse("$url/room/$codeRoom"),
+    var response = await http.get(Uri.parse("${Settings().url}/room/$codeRoom"),
                    headers: Header().headers());
     
     try{
