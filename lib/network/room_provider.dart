@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:chaf_engine/data/local/shared_prefs.dart';
 import 'package:chaf_engine/data/room_detail.dart';
 import 'package:chaf_engine/network/model/header.dart';
 import 'package:chaf_engine/settings.dart';
@@ -15,7 +16,7 @@ class RoomProvider {
     }
 
     Either<RoomDetail, Error> res;
-    var response = await http.get(Uri.parse("${Settings().url}/room/$codeRoom"),
+    var response = await http.get(Uri.parse("${SharePrefs().getString("url")}/room/$codeRoom"),
                    headers: Header().headers());
     
     try{

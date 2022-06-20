@@ -1,8 +1,12 @@
+import 'package:chaf_engine/data/local/shared_prefs.dart';
+
 class Settings{
 
-  late String url;
+  setUrl(String url){
+    SharePrefs().save("url", url);
+  }
 
-  setUrl(String urlName){
-    url = urlName;
+  secretKey(String valueKey){
+    SharePrefs().save("secretKey", valueKey);
   }
 }
