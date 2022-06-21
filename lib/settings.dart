@@ -4,9 +4,6 @@ import 'package:flutter/foundation.dart';
 class Settings{
 
   setUrl(String url){
-    if(kDebugMode){
-      print("settings, url = $url");
-    }
     SharePrefs().save("url", url);
   }
 

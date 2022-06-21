@@ -11,7 +11,7 @@ class SharePrefs{
       if(kDebugMode){
         print("sharePref, val = $value");
       }
-      await prefs.setString(key, value);
+      await prefs.setString(key, value).then((value) => debugPrint("String isSuccess = $value"));
     } else if(value is double){
       await prefs.setDouble(key, value);
     } else if(value is bool){
@@ -42,7 +42,8 @@ class SharePrefs{
   String getString(String key){
     String result = "";
     getValueString(key).then((value) => {
-       result = value
+      result = value,
+      debugPrint("value ny = $value")
     });
 
     return result;
