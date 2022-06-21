@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:chaf_engine/data/local/shared_prefs.dart';
 import 'package:chaf_engine/data/room_detail.dart';
 import 'package:chaf_engine/network/model/header.dart';
+import 'package:chaf_engine/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:dartz/dartz.dart';
@@ -15,7 +16,8 @@ class RoomProvider {
     }
 
     Either<RoomDetail, Error> res;
-    String url = SharePrefs().getString("chaf_url");
+    //String url = SharePrefs().getString("chaf_url");
+    String url = Settings.url;
     var response = await http.get(Uri.parse("$url/room/$codeRoom"),
                    headers: Header().headers());
     

@@ -12,14 +12,4 @@ class RoomRepository{
   Future<Either<RoomDetail, Error>> resultDetail(String code) {
     return _provider.roomDetail(code);
   }
-
-  void logData(){
-    final url = SharePrefs().getString("chaf_url");
-    final key = SharePrefs().getString("chaf_secretKey");
-    if(kDebugMode){
-      print("url = $url, key = $key");
-    }
-
-    debugPrint("url from setting = ${Settings().getUrl()}");
-  }
 }
