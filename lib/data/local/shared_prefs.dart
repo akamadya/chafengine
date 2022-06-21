@@ -41,10 +41,10 @@ class SharePrefs{
 
   String getString(String key){
     String result = "";
-    getValueString(key).then((value) => {
-       result = value,
-       debugPrint("getString value = $value, result = $result")
-    });
+    result = getValueString(key).then((value) => {
+       result = value
+       //debugPrint("getString value = $value, result = $result")
+    }).toString();
 
     debugPrint("getString result = $result");
 

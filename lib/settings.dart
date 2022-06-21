@@ -3,11 +3,18 @@ import 'package:flutter/foundation.dart';
 
 class Settings{
 
+  late String url;
+
   setUrl(String url){
-    SharePrefs().save("url", url);
+    this.url = url;
+    SharePrefs().save("chaf_url", url);
+  }
+
+  getUrl(){
+    return url;
   }
 
   secretKey(String valueKey){
-    SharePrefs().save("secretKey", valueKey);
+    SharePrefs().save("chaf_secretKey", valueKey);
   }
 }
