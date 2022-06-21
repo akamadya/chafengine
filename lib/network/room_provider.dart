@@ -16,12 +16,13 @@ class RoomProvider {
     }
 
     Either<RoomDetail, Error> res;
-    var response = await http.get(Uri.parse("${SharePrefs().getString("url")}/room/$codeRoom"),
+    final url = SharePrefs().getString("url") as String;
+    var response = await http.get(Uri.parse("$url/room/$codeRoom"),
                    headers: Header().headers());
     
     try{
       if (kDebugMode) {
-        print("api = ${SharePrefs().getString("url")}/room/$codeRoom ,response = ${response.body}");
+        print("api = $url/room/$codeRoom ,response = ${response.body}");
       }
 
       var jo = json.decode(response.body);
