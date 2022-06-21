@@ -20,7 +20,7 @@ class SharePrefs{
     return prefs.getInt(key) ?? 0;
   }
 
-  Future<String> getString(String key) async{
+  Future<String> getValueString(String key) async{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getString(key) ?? "";
   }
@@ -33,5 +33,14 @@ class SharePrefs{
   Future<bool> getBool(String key) async{
     final prefs = await SharedPreferences.getInstance();
     return prefs.getBool(key) ?? false;
+  }
+
+  String getString(String key){
+    String result = "";
+    getValueString(key).then((value) => {
+       result = value
+    });
+
+    return result;
   }
 }

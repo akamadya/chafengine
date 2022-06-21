@@ -4,8 +4,8 @@ class Header{
   Map<String, String> map = <String, String>{};
 
   Map<String, String> headers(){
-    map["X-API-KEY"] = SharePrefs().getString("secretKey") as String;
-    map['Authorized'] = SharePrefs().getString("auth") as String;
+    map["X-API-KEY"] = SharePrefs().getString("secretKey");
+    map['Authorized'] = SharePrefs().getString("auth");
 
     return map;
   }
