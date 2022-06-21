@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharePrefs{
@@ -7,6 +8,9 @@ class SharePrefs{
     if (value is int){
       await prefs.setInt(key, value);
     } else if(value is String){
+      if(kDebugMode){
+        print("sharePref, val = $value");
+      }
       await prefs.setString(key, value);
     } else if(value is double){
       await prefs.setDouble(key, value);
