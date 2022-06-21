@@ -21,7 +21,7 @@ class RoomProvider {
     
     try{
       if (kDebugMode) {
-        print("response = ${response.body}");
+        print("api = ${SharePrefs().getString("url")}/room/$codeRoom ,response = ${response.body}");
       }
 
       var jo = json.decode(response.body);
