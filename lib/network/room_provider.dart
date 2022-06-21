@@ -16,7 +16,8 @@ class RoomProvider {
     }
 
     Either<RoomDetail, Error> res;
-    final url = SharePrefs().getString("url") as String;
+    String url = "";
+    SharePrefs().getString("url").then((value) => url = value);
     var response = await http.get(Uri.parse("$url/room/$codeRoom"),
                    headers: Header().headers());
     
