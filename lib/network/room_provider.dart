@@ -12,13 +12,13 @@ class RoomProvider {
   
   Future<Either<RoomDetailResponse, Error>> roomDetail(codeRoom) async{
     Either<RoomDetailResponse, Error> res;
-    String url = Settings.url;
-    var response = await http.get(Uri.parse("$url/room/$codeRoom"),
+    String url = "${Settings.url}/room/$codeRoom";
+    var response = await http.get(Uri.parse(url),
                    headers: Header().headers());
     
     try{
       if (kDebugMode) {
-        print("api = $url/room/$codeRoom ,response = ${response.body}");
+        print("api = $url ,response = ${response.body}");
       }
 
       var jo = json.decode(response.body);
@@ -38,13 +38,13 @@ class RoomProvider {
 
   Future<Either<RoomMemberResponse, Error>> roomMember(codeRoom) async{
     Either<RoomMemberResponse, Error> res;
-    String url = Settings.url;
-    var response = await http.get(Uri.parse("$url/room/member/?code=$codeRoom"),
+    String url = "${Settings.url}/room/member/$codeRoom?code=$codeRoom";
+    var response = await http.get(Uri.parse(url),
         headers: Header().headers());
 
     try{
       if (kDebugMode) {
-        print("api = $url/room/member/$codeRoom ,response = ${response.body}");
+        print("api = $url ,response = ${response.body}");
       }
 
       var jo = json.decode(response.body);
