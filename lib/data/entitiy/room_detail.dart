@@ -1,4 +1,3 @@
-
 class RoomDetail {
   int? statusCode;
   String? message;
@@ -57,7 +56,7 @@ class Data {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data["room_id"] = roomId;
     data["room_code"] = roomCode;
     data["room_name"] = roomName;
