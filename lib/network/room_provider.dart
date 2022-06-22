@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:chaf_engine/data/entitiy/room_member.dart';
-import 'package:chaf_engine/data/entitiy/room_detail.dart';
 import 'package:chaf_engine/network/model/header.dart';
+import 'package:chaf_engine/network/response/room_detail_response.dart';
+import 'package:chaf_engine/network/response/room_member_response.dart';
 import 'package:chaf_engine/settings.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -10,8 +10,8 @@ import 'package:chaf_engine/network/model/error.dart';
 
 class RoomProvider {
   
-  Future<Either<RoomDetail, Error>> roomDetail(codeRoom) async{
-    Either<RoomDetail, Error> res;
+  Future<Either<RoomDetailResponse, Error>> roomDetail(codeRoom) async{
+    Either<RoomDetailResponse, Error> res;
     String url = Settings.url;
     var response = await http.get(Uri.parse("$url/room/$codeRoom"),
                    headers: Header().headers());
@@ -23,7 +23,7 @@ class RoomProvider {
 
       var jo = json.decode(response.body);
       if(response.statusCode == 200){
-        res = Left(RoomDetail.fromJson(jo));
+        res = Left(RoomDetailResponse.fromJson(jo));
       } else {
         res = Right(Error.fromJson(jo));
       }
@@ -36,8 +36,8 @@ class RoomProvider {
     return res;
   }
 
-  Future<Either<RoomMember, Error>> roomMember(codeRoom) async{
-    Either<RoomMember, Error> res;
+  Future<Either<RoomMemberResponse, Error>> roomMember(codeRoom) async{
+    Either<RoomMemberResponse, Error> res;
     String url = Settings.url;
     var response = await http.get(Uri.parse("$url/room/member/$codeRoom"),
         headers: Header().headers());
@@ -49,7 +49,7 @@ class RoomProvider {
 
       var jo = json.decode(response.body);
       if(response.statusCode == 200){
-        res = Left(RoomMember.fromJson(jo));
+        res = Left(RoomMemberResponse.fromJson(jo));
       } else {
         res = Right(Error.fromJson(jo));
       }
