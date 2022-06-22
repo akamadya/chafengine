@@ -39,7 +39,7 @@ class RoomProvider {
   Future<Either<RoomMemberResponse, Error>> roomMember(codeRoom) async{
     Either<RoomMemberResponse, Error> res;
     String url = Settings.url;
-    var response = await http.get(Uri.parse("$url/room/member/$codeRoom"),
+    var response = await http.get(Uri.parse("$url/room/member/?code=$codeRoom"),
         headers: Header().headers());
 
     try{
