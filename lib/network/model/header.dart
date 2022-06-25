@@ -9,7 +9,7 @@ class Header{
     // map['Authorization'] = SharePrefs().getString("chaf_auth");
 
     map["X-API-KEY"] = Settings.secretKey;
-    map['Authorization'] = Settings.accessToken;
+    map['Authorization'] = "Bearer ${Settings.accessToken}";
 
     return map;
   }
