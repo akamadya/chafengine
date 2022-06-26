@@ -57,7 +57,7 @@ class RoomProvider {
     } catch(e){
       var error = Error();
       res = Right(error.callback());
-      throw Exception("Gagal Room Detail dude = $e");
+      throw Exception("Gagal Room Member dude = $e");
     }
     return res;
   }

@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:chaf_engine/network/model/error.dart';
 import 'package:chaf_engine/network/request/common_request.dart';
+import 'package:chaf_engine/network/request/send_chat_request.dart';
 import 'package:chaf_engine/network/response/chat_list_response.dart';
+import 'package:chaf_engine/network/response/common_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/foundation.dart';
 import '../settings.dart';
@@ -22,6 +24,32 @@ class ChatProvider{
       var jo = json.decode(response.body);
       if(response.statusCode == 200){
         res = Left(ChatListResponse.fromJson(jo));
+      } else {
+        res = Right(Error.fromJson(jo));
+      }
+
+    } catch(e){
+      var error = Error();      
+      res = Right(error.callback());
+      throw Exception("Gagal Chat list dude = $e");
+    }
+    return res;               
+  }
+
+  Future<Either<CommonResponse, Error>> sendChat(SendChatRequest request) async{
+    Either<CommonResponse, Error> res;
+    String url = "${Settings.url}/chat/send";
+    
+    var response = await http.post(Uri.parse(url), 
+                body: request.toJson(),
+                headers: Header().headers());
+
+    try{
+      debugPrint("api = $url ,response = ${response.body}");
+
+      var jo = json.decode(response.body);
+      if(response.statusCode == 200){
+        res = Left(CommonResponse.fromJson(jo));
       } else {
         res = Right(Error.fromJson(jo));
       }
