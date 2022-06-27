@@ -38,7 +38,7 @@ class ChatProvider{
 
   Future<Either<CommonResponse, Error>> sendChat(SendChatRequest request) async{
 
-    var body = Map<String, String>();
+    var body = <String, String>{};
     body["room_code"] = request.room_code;
     body["reply_chat_id"] = request.reply_chat_id.toString();
     body["text"] = request.text;
@@ -55,11 +55,12 @@ class ChatProvider{
     req.fields.addAll(body);
     req.headers.addAll(Header().headers());
     var response = await req.send();
+    var printResponse = await response.stream.bytesToString();
 
     try{
-      debugPrint("api = $url ,response = ${response}");
+      debugPrint("api = $url ,response = $printResponse");
 
-      var jo = json.decode(response.toString());
+      var jo = json.decode(printResponse);
       if(response.statusCode == 200){
         res = Left(CommonResponse.fromJson(jo));
       } else {
