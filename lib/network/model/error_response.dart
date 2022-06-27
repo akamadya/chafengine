@@ -1,14 +1,14 @@
-class Error {
+class ErrorResponse {
   int? statusCode;
   String? message;
-  List<String>? error;
+  dynamic error;
 
-  Error({this.statusCode, this.message, this.error});
+  ErrorResponse({this.statusCode, this.message, this.error});
 
-  Error.fromJson(Map<String, dynamic> json) {
+  ErrorResponse.fromJson(Map<String, dynamic> json) {
     statusCode = json['statusCode'];
     message = json['message'];
-    error = json['error'].cast<String>();
+    error = json['error'];
   }
 
   Map<String, dynamic> toJson() {
@@ -19,11 +19,11 @@ class Error {
     return data;
   }
 
-  Error callback(){
+  ErrorResponse callback(){
     String msg = "Bermasalah dengan server atau jaringan internet , coba lagi nanti.";
     statusCode = 512; 
     message = msg;
-    error = [msg];
+    error = msg;
 
     return this;
   }
