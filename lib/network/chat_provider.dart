@@ -37,6 +37,13 @@ class ChatProvider{
   }
 
   Future<Either<CommonResponse, Error>> sendChat(SendChatRequest request) async{
+
+    var body = Map<String, String>();
+    body["room_code"] = request.room_code;
+    body["reply_chat_id"] = request.reply_chat_id.toString();
+    body["text"] = request.text;
+    body["media"] = request.media.toString();
+
     Either<CommonResponse, Error> res;
     String url = "${Settings.url}/chat/send";
 
@@ -45,7 +52,7 @@ class ChatProvider{
     //             headers: Header().headers());
 
     var req = http.MultipartRequest('POST', Uri.parse(url));
-    req.fields.addAll(request.toMap());
+    req.fields.addAll(body);
     req.headers.addAll(Header().headers());
     var response = await req.send();
 
