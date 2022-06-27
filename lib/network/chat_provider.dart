@@ -39,15 +39,20 @@ class ChatProvider{
   Future<Either<CommonResponse, Error>> sendChat(SendChatRequest request) async{
     Either<CommonResponse, Error> res;
     String url = "${Settings.url}/chat/send";
-    
-    var response = await http.post(Uri.parse(url), 
-                body: request.toJson(),
-                headers: Header().headers());
+
+    // var response = await http.post(Uri.parse(url), 
+    //             body: request.toJson(),
+    //             headers: Header().headers());
+
+    var req = http.MultipartRequest('POST', Uri.parse(url));
+    req.fields.addAll(request.toMap());
+    req.headers.addAll(Header().headers());
+    var response = await req.send();
 
     try{
-      debugPrint("api = $url ,response = ${response.body}");
+      debugPrint("api = $url ,response = ${response}");
 
-      var jo = json.decode(response.body);
+      var jo = json.decode(response.toString());
       if(response.statusCode == 200){
         res = Left(CommonResponse.fromJson(jo));
       } else {
@@ -57,7 +62,7 @@ class ChatProvider{
     } catch(e){
       var error = Error();      
       res = Right(error.callback());
-      throw Exception("Gagal Chat list dude = $e");
+      throw Exception("Gagal send message dude = $e");
     }
     return res;               
   }
