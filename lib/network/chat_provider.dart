@@ -57,9 +57,8 @@ class ChatProvider{
     Either<CommonResponse, ErrorResponse> res;
     String url = "${Settings.url}/chat/send";
 
-    //var req = http.MultipartRequest('POST', Uri.parse(url));
-    var requestHttp = await HttpClient().postUrl(Uri.parse(url));
-    var req = http.MultipartRequest("", Uri.parse("uri"));
+    //var requestHttp = await HttpClient().postUrl(Uri.parse(url));
+    var req = http.MultipartRequest('POST', Uri.parse(url));
 
     if(request.mediaPath.toString().isNotEmpty){
       final file = await http.MultipartFile.fromPath('media', request.mediaPath.toString()); 
@@ -90,14 +89,16 @@ class ChatProvider{
       )
     );
 
-    var response = await requestHttp.addStream(streamUpload);
-    var httpResponse = await requestHttp.close();
+    var response = await req.send();
+
+    // var response = await requestHttp.addStream(streamUpload);
+    // var httpResponse = await requestHttp.close();
     var printResponse = response.stream.bytesToString;
 
     try{
       debugPrint("api = $url ,response = $printResponse");
 
-      var jo = json.decode(printResponse);
+      var jo = json.decode(printResponse.toString());
       if(response.statusCode == 201){
         res = Left(CommonResponse.fromJson(jo));
       } else {
