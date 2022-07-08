@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:chaf_engine/network/model/error_response.dart';
 import 'package:chaf_engine/network/request/common_request.dart';
@@ -41,6 +43,8 @@ class ChatProvider{
   // kirim pesan
   Future<Either<CommonResponse, ErrorResponse>> sendChat(SendChatRequest request) async{
 
+    int byteCount = 0;
+
     var body = <String, String>{};
     body["room_code"] = request.room_code;    
     body["text"] = request.text;
@@ -53,17 +57,42 @@ class ChatProvider{
     Either<CommonResponse, ErrorResponse> res;
     String url = "${Settings.url}/chat/send";
 
-    var req = http.MultipartRequest('POST', Uri.parse(url));
+    //var req = http.MultipartRequest('POST', Uri.parse(url));
+    var requestHttp = await HttpClient().postUrl(Uri.parse(url));
+    var req = http.MultipartRequest("", Uri.parse("uri"));
 
-    if(request.media.toString().isNotEmpty){
-      final file = await http.MultipartFile.fromPath('image', request.media.toString()); 
-      
+    if(request.mediaPath.toString().isNotEmpty){
+      final file = await http.MultipartFile.fromPath('media', request.mediaPath.toString()); 
+      req.files.add(file);
     }
 
     req.fields.addAll(body);
     req.headers.addAll(Header().headers());
-    var response = await req.send();
-    var printResponse = await response.stream.bytesToString();
+    // var response = await req.send();  
+    // var printResponse = await response.stream.bytesToString();
+
+    var msStream = req.finalize();
+    var totalByteLength = req.contentLength;
+    req.contentLength = totalByteLength;
+    Stream<List<int>> streamUpload = msStream.transform(
+      StreamTransformer.fromHandlers(
+        handleData: (data, sink) {
+          sink.add(data);
+          byteCount+= data.length;
+          debugPrint("byteCount = $byteCount, totalByteLength = $totalByteLength");    
+        },
+        handleError: (error, stack, sink){
+          throw error;
+        },
+        handleDone: (sink){
+          sink.close();
+        }
+      )
+    );
+
+    var response = await requestHttp.addStream(streamUpload);
+    var httpResponse = await requestHttp.close();
+    var printResponse = response.stream.bytesToString;
 
     try{
       debugPrint("api = $url ,response = $printResponse");
