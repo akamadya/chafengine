@@ -60,34 +60,36 @@ class ChatProvider{
     //var requestHttp = await HttpClient().postUrl(Uri.parse(url));
     var req = http.MultipartRequest('POST', Uri.parse(url));
 
+    req.fields.addAll(body);
+    req.headers.addAll(Header().headers());
+
     if(request.mediaPath != null){
       final file = await http.MultipartFile.fromPath('media', request.mediaPath.toString()); 
       req.files.add(file);
+
+      var msStream = req.finalize();
+      var totalByteLength = req.contentLength;
+      req.contentLength = totalByteLength;
+      Stream<List<int>> streamUpload = msStream.transform(
+        StreamTransformer.fromHandlers(
+          handleData: (data, sink) {
+            sink.add(data);
+            byteCount+= data.length;
+            debugPrint("byteCount = $byteCount, totalByteLength = $totalByteLength");    
+          },
+          handleError: (error, stack, sink){
+            throw error;
+          },
+          handleDone: (sink){
+            sink.close();
+          }
+        )
+      );
     }
 
-    req.fields.addAll(body);
-    req.headers.addAll(Header().headers());
+    
     // var response = await req.send();  
     // var printResponse = await response.stream.bytesToString();
-
-    var msStream = req.finalize();
-    var totalByteLength = req.contentLength;
-    req.contentLength = totalByteLength;
-    Stream<List<int>> streamUpload = msStream.transform(
-      StreamTransformer.fromHandlers(
-        handleData: (data, sink) {
-          sink.add(data);
-          byteCount+= data.length;
-          debugPrint("byteCount = $byteCount, totalByteLength = $totalByteLength");    
-        },
-        handleError: (error, stack, sink){
-          throw error;
-        },
-        handleDone: (sink){
-          sink.close();
-        }
-      )
-    );
 
     var response = await req.send();
 
