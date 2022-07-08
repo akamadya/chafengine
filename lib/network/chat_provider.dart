@@ -60,7 +60,7 @@ class ChatProvider{
     //var requestHttp = await HttpClient().postUrl(Uri.parse(url));
     var req = http.MultipartRequest('POST', Uri.parse(url));
 
-    if(request.mediaPath.toString().isNotEmpty){
+    if(request.mediaPath != null){
       final file = await http.MultipartFile.fromPath('media', request.mediaPath.toString()); 
       req.files.add(file);
     }
